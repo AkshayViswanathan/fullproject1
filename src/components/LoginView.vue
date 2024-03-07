@@ -6,7 +6,7 @@
                     Login 
                    </div>
                   
-                   <div class="h-96 flex justify-between flex-wrap p-10" >
+                   <form class="h-96 flex justify-between flex-wrap p-10" >
                    
                     
                     <div class="flex flex-col w-full">
@@ -23,14 +23,14 @@
                     </div>
                   
                     <div class=" w-full flex justify-between ">
-                        <a href="" class="underline text-blue-500 hover:underline-offset-4 hover:text-blue-700	"  >forgot Password?</a>
+                        <a href="/forgotpassword" class="underline text-blue-500 hover:underline-offset-4 hover:text-blue-700 text-sm	"  >forgot Password?</a>
                        <button class="bg-blue-500 hover:bg-blue-600 text-white w-20 h-10 rounded-md "> Login</button>
                     </div>
                     
       
-                   </div>
+                   </form>
                    <div class="flex justify-center items-center h-10 rounded-md border-2 ring-gray-400">
-                    <a href="" class="underline text-blue-500 hover:underline-offset-4 hover:text-blue-700	"> Need an account ? signup</a>
+                    <a href="/register" class="underline text-blue-500 hover:underline-offset-4 hover:text-blue-700	"> Need an account ? signup</a>
                    </div>
                   
             </div>
