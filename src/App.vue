@@ -1,5 +1,5 @@
 <template>
-  <div class="RuoterLinks">
+  <div  class="app">
     <RouterView />
   
   </div>
@@ -7,6 +7,11 @@
   </template>
   
   <script >
- 
-  
+
   </script>
+
+
+<style>
+
+  
+</style>

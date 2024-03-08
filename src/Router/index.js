@@ -17,6 +17,12 @@ const routes = [
    name:"forgotpassword",
    component: ()=>import("../components/ForgotpasswordView.vue")
  },
+ { 
+  path:"/userdashboard",
+  name:"userdashboard",
+  component: ()=>import("../components/UserDashboardview.vue")
+},
+
 
 ]
 
