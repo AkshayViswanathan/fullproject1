@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div>
       <button @click="fetchData">Fetch Data</button>
       <ul>
@@ -21,4 +21,4 @@
     }
   };
   </script>
-  
+   -->
