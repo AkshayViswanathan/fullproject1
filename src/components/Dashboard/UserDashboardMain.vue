@@ -26,7 +26,8 @@
          <button class="h-[40px] w-[120px] rounded-md bg-gradient-to-r text-white from-violet-900 to-fuchsia-600" @click="Modaltogglefunction">Edit Profile</button>
       
          <UserModal :activeModal="activeModal" @closeModal="Modaltogglefunction"> 
-           <input type="">
+        
+
 
 
         </UserModal>

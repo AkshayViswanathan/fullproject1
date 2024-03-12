@@ -13,6 +13,7 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.19",
     "@vee-validate/yup": "^4.12.5",
+    "axios": "^1.6.7",
     "mdb-vue-ui-kit": "^4.1.1",
     "vee-validate": "^4.12.5",
     "vue": "^3.4.15",
