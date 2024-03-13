@@ -9,12 +9,16 @@
           <form @submit.prevent="fetchApi" class="h-96 flex justify-between flex-wrap p-10">
             <div class="flex flex-col w-full">
               <label class="text-gray-700 text-sm mb-1">Email</label>
-              <input v-model="email" type="text" class="block w-full rounded-md focus:border-2 ease-in-out duration-100 focus:border-sky-600/[.30] outline-none py-2.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.40] sm:text-sm sm:leading-6" placeholder="Enter email">
+              <input v-model="email" type="text" class="block w-full rounded-md focus:border-2 ease-in-out duration-100 focus:border-sky-600/[.30] outline-none py-2.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.40] sm:text-sm sm:leading-6" placeholder="Enter email"> 
+
             </div>
             <div class="flex flex-col w-full">
               <label class="text-gray-700 text-sm mb-1">Password</label>
               <input v-model="password" type="password" class="block w-full rounded-md focus:border-2 ease-in-out duration-100 focus:border-sky-600/[.30] outline-none py-2.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.40] sm:text-sm sm:leading-6" placeholder="Enter password">
             </div>
+            <span v-show="validationfailmssg" class="w-full text-red-600"> Incorrect user email or password</span>
+
+
             <div>
               <input id="RememberPassword" type="checkbox">
               <label for="RememberPassword" class="text-gray-700">Remember Password</label>
@@ -35,20 +39,43 @@
   <script setup>
   import axios from 'axios';
   import { ref } from "vue";
+  import { useRouter } from 'vue-router';
+
   
   const email = ref('');
   const password = ref('');
   const datafetch = ref(null);
+  const validationfailmssg = ref(false)
+  const router = useRouter();
+
+
   
   const fetchApi = async () => {
     try {
       const apiData = await axios.post('http://localhost:3000/api/auth/login', { email: email.value, password: password.value }).then(response => response.data);
       datafetch.value = apiData;
       console.log(apiData);
+      conditionalNavigate()
     } catch (error) {
       console.error("fetch failed:", error);
+      validationfailmssg.value = true;
+
     }
   };
+  
+
+  const conditionalNavigate = () => {
+  if (datafetch.value.status) {
+    router.push('/admindashboard');
+    validationfailmssg.value = false;
+  }  
+};
+
+
+
+    
+
+  
   </script>
   
   <style scoped>
