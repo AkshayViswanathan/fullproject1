@@ -5,17 +5,17 @@ const routes = [
  {  
     path:"/",
     name:"login",
-    component: ()=>import("../components/LoginView.vue")
+    component: ()=>import("../components/Auth/LoginView.vue")
    },
  { 
     path:"/Register",
     name:"register",
-    component: ()=> import("../components/RegisterView.vue")
+    component: ()=> import("../components/Auth/RegisterView.vue")
   },
   { 
    path:"/forgotpassword",
    name:"forgotpassword",
-   component: ()=>import("../components/ForgotpasswordView.vue")
+   component: ()=>import("../components/Auth/ForgotpasswordView.vue")
  },
  { 
   path:"/userdashboard",

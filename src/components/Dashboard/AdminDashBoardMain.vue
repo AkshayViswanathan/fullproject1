@@ -30,9 +30,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(item, index) in people" :key="index">
+      <tr v-for="(item, index) in allUsers" :key="index">
         <td>1</td>
-        <td>{{ item?.peoplename }}</td>
+        <td>{{ item?.firstName }} {{  item?.lastName  }}</td>
         <td>{{ item?.email }}</td>
         <td>{{ item?.role }}</td>
         <td><button class="text-white rounded-md max-w-24 bg-blue-600 py-2 px-6">Edit</button></td>
@@ -51,24 +51,12 @@
     </template>
     
     <script setup>
-    import { ref } from "vue";
+    import { ref, onMounted } from "vue";
     import NavBar from "../NavBar/NavBar.vue"
-    
-    const people =ref([
-      { id:1,
-        peoplename:"sonu",
-        email:"sonu@gmail.com",
-        role: "Agent"
+    import axios from 'axios';
 
-      },   { id:1,
-        peoplename:"raju",
-        email:"raju@gmail.com",
-        role: "Agent"
 
-      },
-  
-    ]) 
-    
+    const allUsers =ref([]) 
     const isToggle = ref(false);
 
 
@@ -77,6 +65,28 @@
       isToggle.value = value;
     
     };
+
+    const ListUserApi = async () => {
+      const accessToken = localStorage.getItem('accessToken')
+      console.log(accessToken);
+
+
+    try {
+      const apiData = await axios.get('http://localhost:3000/api/admin/users', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    } ).then(response => response.data);  
+      allUsers.value = apiData.data.users;
+      console.log(allUsers);
+
+    } catch (error) {
+      console.error("fetch failed:", error);
+    }
+  };
+
+  onMounted(()=>{ListUserApi()} )
+
     </script>
     
     <style scoped>

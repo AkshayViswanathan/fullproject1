@@ -56,6 +56,7 @@
       datafetch.value = apiData;
       console.log(apiData);
       conditionalNavigate()
+      localStorage.setItem('accessToken', apiData.data.user.accessToken);
     } catch (error) {
       console.error("fetch failed:", error);
       validationfailmssg.value = true;
@@ -70,10 +71,6 @@
     validationfailmssg.value = false;
   }  
 };
-
-
-
-    
 
   
   </script>
