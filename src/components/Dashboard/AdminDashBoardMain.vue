@@ -6,35 +6,35 @@
       <div class=" m-2 "  >
         
         <div class=" flex flex-col m-2">
-         <label for="firstname" class="text-gray-700  text-sm mb-1"> </label>
-         <input v-model="firstname" v-bind="firstnameAttrs" type="text" class="block w-full rounded-md focus:border-2 ease-in-out duration-100 focus:border-sky-600/[.30] outline-none py-2.5  pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.40] sm:text-sm sm:leading-6" placeholder="Enter first name" />
+         <label for="firstname" class="text-gray-700  text-sm mb-1">First Name </label>
+         <input v-model="singleUser.firstName"  type="text" class="block w-full rounded-md focus:border-2 ease-in-out duration-100 focus:border-sky-600/[.30] outline-none py-2.5  pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.40] sm:text-sm sm:leading-6" placeholder="Enter first name" />
         
         </div>
          <div class="flex flex-col m-2">
          <label class="text-gray-700  text-sm mb-1"> Last Name</label>
-         <input v-model="lastname" v-bind="lastnameAttrs" type="text" class="block w-full rounded-md border focus:border-blue-600 outline-none py-2.5  pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.55] sm:text-sm sm:leading-6" placeholder="Enter last name" />
+         <input v-model="singleUser.lastName" type="text" class="block w-full rounded-md border focus:border-blue-600 outline-none py-2.5  pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.55] sm:text-sm sm:leading-6" placeholder="Enter last name" />
          </div>
 
          <div class="flex flex-col w-full m-2 mb-4">
          <label class="text-gray-700  text-sm mb-1"> Email</label>
-         <input v-model="email" v-bind="emailAtt" type="text" class="block w-full rounded-md focus:border-2 ease-in-out duration-100 focus:border-sky-600/[.30] outline-none py-2.5  pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.40] sm:text-sm sm:leading-6" placeholder="Enter email" />
+         <input v-model="singleUser.email"  type="text" class="block w-full rounded-md focus:border-2 ease-in-out duration-100 focus:border-sky-600/[.30] outline-none py-2.5  pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.40] sm:text-sm sm:leading-6" placeholder="Enter email" />
          </div>
          <div class="flex flex-col w-full m-2 mb-4">
             <label class="text-gray-700 text-sm mb-1">Role</label>
-            <select v-model="role" class="block w-full rounded-md focus:border-2 ease-in-out duration-100 focus:border-sky-600/[.30] outline-none py-2.5 pl-2 pr-8 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.40] sm:text-sm sm:leading-6">
-                <option value="" disabled selected>Select a role</option>
-                <option value="role1">Admin</option>
-                <option value="role2">Agent</option>
-                <option value="role2">Supervisor</option>
+            <select  class="block w-full rounded-md focus:border-2 ease-in-out duration-100 focus:border-sky-600/[.30] outline-none py-2.5 pl-2 pr-8 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.40] sm:text-sm sm:leading-6">
+                <option value="" disabled selected>{{ singleUser.role }}</option>
+                <option value="role1">admin</option>
+                <option value="role2">agent</option>
+                <option value="role2">supervisor</option>
                 <option value="role3">QA</option>
-                <option value="role3">Qc</option>
+                <option value="role3">QC</option>
                 <!-- Add more options as needed -->
             </select>
          </div>
 
         <div class="flex justify-between m-2">
-            <button class="text-white rounded-md bg-blue-600 py-2 px-6" @click="$emit('closeModal')"> close </button>
-            <button class="text-white rounded-md bg-emerald-600 py-2 px-6" >Save</button>
+            <button class="text-white rounded-md bg-blue-600 py-2 px-6" @click="Modaltogglefunction"> close </button>
+            <button class="text-white rounded-md bg-emerald-600 py-2 px-6" @click="editUserDetailByAdminAPI(singleUser.id)" >Save</button>
         </div>
 </div>     
 
@@ -81,10 +81,7 @@
   <!-- Add more rows here if needed -->
 </tbody>
 </table>
-
-
   </div>
-    
       </div>
     </div>   
   </div>
@@ -101,7 +98,17 @@ import EditModal from './AdminEditModal.vue'
 const listedUser =ref([]) 
 const isToggle = ref(false);
 const activeModal = ref(false);
-const singleUser =ref("")
+const singleUser =ref(
+ {
+  id:"",  
+firstName: "",
+  lastName:"",
+  role:"",
+  email:"",
+ }
+)
+
+
 
 
 const sidebartoggle = (value) => {
@@ -143,11 +150,45 @@ try {
     Authorization: `Bearer ${accessToken}`,
   },
 } ).then(response => response.data);  
-  singleUser.value = apiData.data.user;
+  singleUser.value.id = apiData.data.user.id;
+  singleUser.value.firstName = apiData.data.user.firstName;
+  singleUser.value.lastName = apiData.data.user.lastName;
+  singleUser.value.role = apiData.data.user.role;
+  singleUser.value.email = apiData.data.user.email;
+  
   console.log(singleUser);
+  Modaltogglefunction()
 
 } catch (error) {
   console.error("fetch failed:", error);
+}
+};
+
+                                             // edit user deatil API
+
+const editUserDetailByAdminAPI = async (userId) => {
+  const accessToken  = localStorage.getItem('accessToken')
+
+try {
+   await axios.patch(`http://localhost:3000/api//admin/users/${userId}`, {
+            "firstName": singleUser.value.firstName ,
+            "lastName": singleUser.value.lastName,
+            "email": singleUser.value.email,
+            "role": singleUser.value.role,
+            "password": singleUser.value.password,
+           
+        },{
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+  },
+} ).then(response => response.data);  
+
+
+activeModal.value= false
+location.reload();
+
+} catch (error) {
+  console.error("Patch edit api fetch failed:", error);
 }
 };
 

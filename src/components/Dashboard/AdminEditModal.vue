@@ -20,15 +20,9 @@ defineEmits(["closeModal"])
 defineProps({
     activeModal:{
         type: Boolean,
-        default: false,
-        
-    },
-    userData: Array
- 
+        default: false
+    }
 })
-
-
-
 
   </script>
   
