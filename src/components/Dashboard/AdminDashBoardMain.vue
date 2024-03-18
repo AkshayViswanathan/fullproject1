@@ -64,13 +64,13 @@
                </div>
                <div class="flex flex-col w-full m-2 mb-4">
                   <label class="text-gray-700 text-sm mb-1">Role</label>
-                  <select  class="block w-full rounded-md focus:border-2 ease-in-out duration-100 focus:border-sky-600/[.30] outline-none py-2.5 pl-2 pr-8 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.40] sm:text-sm sm:leading-6">
+                  <select v-model="addUserStore.role" class="block w-full rounded-md focus:border-2 ease-in-out duration-100 focus:border-sky-600/[.30] outline-none py-2.5 pl-2 pr-8 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.40] sm:text-sm sm:leading-6">
                       <option value="" disabled selected> {{ addUserStore.role }}</option>
-                      <option value="role1">admin</option>
-                      <option value="role2">agent</option>
-                      <option value="role2">supervisor</option>
-                      <option value="role3">QA</option>
-                      <option value="role3">QC</option>
+          
+                      <option value="agent">agent</option>
+                      <option value="supervisor">supervisor</option>
+                      <option value="qa">QA</option>
+                      <option value="qc">QC</option>
                       <!-- Add more options as needed -->
                   </select>
                </div>
@@ -82,7 +82,7 @@
             
               <div class="flex justify-between m-2">
                   <button class="text-white rounded-md bg-blue-600 py-2 px-6" @click="addUserOpenModal"> close </button>
-                  <button class="text-white rounded-md bg-emerald-600 py-2 px-6" @click="registerNewAgentByAdminAPI(singleUser.id)" >Save</button>
+                  <button class="text-white rounded-md bg-emerald-600 py-2 px-6" @click="registerNewAgentByAdminAPI" >Create</button>
               </div>
             </div>     
         </AddUser>  
@@ -155,7 +155,7 @@ const activeModal = ref(false);
 const singleUser =ref(
  {
   id:"",  
-firstName: "",
+ firstName: "",
   lastName:"",
   role:"",
   email:"",
@@ -168,7 +168,7 @@ firstName: "",
   lastName:"",
   role:"",
   email:"",
- 
+  password: ""
 })
 
 
@@ -201,7 +201,7 @@ try {
 } ).then(response => response.data);  
 listedUser.value = apiData.data.users;
   // console.log(allUsers);
-
+  editUserDetailByAdminAPI
 } catch (error) {
   console.error("fetch failed:", error);
 }
@@ -270,11 +270,11 @@ try {
    await axios.delete(`http://localhost:3000/api//admin/users/${userId}`, {
   headers: {
     Authorization: `Bearer ${accessToken}`,
-  },registerNewAgentByAdminAPI
+  },
 } ).then(response => response.data);  
 
 activeModal.value= false
-location.reload();
+location.reload();addUserStore
 
 } catch (error) {
   console.error("delete api method failed:", error);
@@ -284,11 +284,11 @@ location.reload();
 
                                  // register a new agent by Admin
 
-const registerNewAgentByAdminAPI = async (userId) => {
+const registerNewAgentByAdminAPI = async () => {
   const accessToken  = localStorage.getItem('accessToken')
-
+  console.log("hallo");
 try {
-   await axios.post(`http://lo  calhost:3000/api//admin/users/${userId}`,{
+   await axios.post(`http://localhost:3000/api/admin/users`,{
     "firstName": addUserStore.value.firstName,
   "lastName": addUserStore.value.lastName,
   "email": addUserStore.value.email,
@@ -299,12 +299,13 @@ try {
     Authorization: `Bearer ${accessToken}`,
   },
 } ).then(response => response.data);  
-
+console.log(addUserStore.value.email);
 
 location.reload();
+ListUserApi();
 
 } catch (error) {
-  console.error("delete api method failed:", error);
+  console.error("registering new user api failed:", error);
 }
 };
 
