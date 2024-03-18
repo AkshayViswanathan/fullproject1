@@ -66,17 +66,20 @@
   
 
   const conditionalNavigate = () => {
-  if (datafetch.value.status) {
+  if (datafetch.value.data.user.role === 'admin') {
     console.log(datafetch.value)
     router.push('/admindashboard');
     validationfailmssg.value = false;
-  } else if (datafetch.value.data.role === "supervisor"){
-    router.push('/admindashboard');
-    validationfailmssg.value = false;
-  } else if (datafetch.value.data.role === "agent"){
+  } else if (datafetch.value.data.user.role == "agent"){
+    console.log( "agent called");
     router.push('/userdashboard');
+    console.log(datafetch.value)
     validationfailmssg.value = false; 
   }
+   else if (datafetch.value.data.user.role === "supervisor"){
+    router.push('/admindashboard');
+    validationfailmssg.value = false;
+  } 
 
   
 };

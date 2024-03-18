@@ -228,7 +228,7 @@ try {
   singleUser.value.role = apiData.data.user.role;
   singleUser.value.email = apiData.data.user.email;
   
-  console.log(singleUser);
+  
   Modaltogglefunction()
 
 } catch (error) {
