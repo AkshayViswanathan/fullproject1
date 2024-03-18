@@ -48,7 +48,7 @@
   const validationfailmssg = ref(false)
   const router = useRouter();
 
-
+// adim login api call
   
   const fetchApi = async () => {
     try {
@@ -67,12 +67,22 @@
 
   const conditionalNavigate = () => {
   if (datafetch.value.status) {
+    console.log(datafetch.value)
     router.push('/admindashboard');
     validationfailmssg.value = false;
-  }  
-};
+  } else if (datafetch.value.data.role === "supervisor"){
+    router.push('/admindashboard');
+    validationfailmssg.value = false;
+  } else if (datafetch.value.data.role === "agent"){
+    router.push('/userdashboard');
+    validationfailmssg.value = false; 
+  }
 
   
+};
+
+
+
   </script>
   
   <style scoped>

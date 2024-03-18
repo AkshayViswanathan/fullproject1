@@ -80,7 +80,7 @@
                <input v-model="addUserStore.password"  type="text" class="block w-full rounded-md focus:border-2 ease-in-out duration-100 focus:border-sky-600/[.30] outline-none py-2.5  pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600/[.40] sm:text-sm sm:leading-6" placeholder="password" />
                </div>
             
-              <div class="flex justify-between m-2">
+              <div class="flex justify-between m-2" >
                   <button class="text-white rounded-md bg-blue-600 py-2 px-6" @click="addUserOpenModal"> close </button>
                   <button class="text-white rounded-md bg-emerald-600 py-2 px-6" @click="registerNewAgentByAdminAPI" >Create</button>
               </div>
@@ -101,7 +101,7 @@
   <div class="bg-white w-[1100px] rounded-md border-2	border-gray-300">
     <div class="w-full bg-green-50 h-[60px] text-gray-900 p-3 text-xl rounded-md flex justify-between">
      <div>  <i class="fa-solid fa-table"></i> Data Table  </div>
-      <button @click="addUserOpenModal" class="bg-green-800 w-[100px] h-[35px] text-white rounded-md"> <i class="fa-solid fa-user-plus"> Add</i></button>
+      <button v-if="!isButtonDisabled" @click="addUserOpenModal" class="bg-green-800 w-[100px] h-[35px] text-white rounded-md"> <i class="fa-solid fa-user-plus"> Add</i></button>
     </div>
    
     <div class="flex gap-4 h-16 border-t-2 border-gray-300	">
@@ -126,8 +126,8 @@
     <td>{{ userlist?.firstName }} {{ userlist?.lastName  }}</td>
     <td>{{ userlist?.email }}</td>
     <td>{{ userlist?.role }}</td>
-    <td><button class="text-white rounded-md max-w-24 bg-blue-600 py-2 px-6" @click="singleserApi(userlist.id)" >Edit</button></td>
-    <td><button class="text-white rounded-md max-w-24 bg-red-600 py-2 px-6" @click="deleteUserDetailByAdminAPI(userlist.id)" >Delete</button></td>
+    <td><button class="text-white rounded-md max-w-24 bg-blue-600 py-2 px-6" :class="{ 'bg-blue-600': !isButtonDisabled, 'bg-gray-400': isButtonDisabled }"  @click="singleserApi(userlist.id)">Edit</button></td>
+    <td><button class="text-white rounded-md max-w-24 bg-red-600 py-2 px-6" :class="{ 'bg-blue-600': !isButtonDisabled, 'bg-gray-400': isButtonDisabled }"  @click="deleteUserDetailByAdminAPI(userlist.id)" >Delete</button></td>
   </tr>
   <!-- Add more rows here if needed -->
 </tbody>
@@ -151,6 +151,7 @@ const addUserModalOpen = ref(false)
 const listedUser =ref([]) 
 const isToggle = ref(false);
 const activeModal = ref(false);
+const isButtonDisabled = ref(false);
 
 const singleUser =ref(
  {
@@ -200,10 +201,13 @@ try {
   },
 } ).then(response => response.data);  
 listedUser.value = apiData.data.users;
-  // console.log(allUsers);
-  editUserDetailByAdminAPI
+
+
+
 } catch (error) {
-  console.error("fetch failed:", error);
+  console.error("adim get userlist fetch failed:", error);
+
+  ListUserApisuperviors()
 }
 };
 
@@ -306,6 +310,27 @@ ListUserApi();
 
 } catch (error) {
   console.error("registering new user api failed:", error);
+}
+};
+
+// superviors
+
+const ListUserApisuperviors = async () => {
+  const accessToken = localStorage.getItem('accessToken')
+  console.log(accessToken);
+
+
+try {
+  const apiData = await axios.get('http://localhost:3000/api/supervisor/users', {
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+  },
+} ).then(response => response.data);  
+listedUser.value = apiData.data.users;
+  
+isButtonDisabled.value = true
+} catch (error) {
+  console.error("supervisor get user list fetch failed:", error);
 }
 };
 
